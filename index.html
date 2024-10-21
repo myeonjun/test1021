@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>임현준_1021</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .skills-title {
+            font-size: 32px; /* 텍스트 크기 조정 */
+            font-weight: bold;
+            margin-bottom: 20px; /* 프로그레스 아래 여백 */
+            color: #333; /* 텍스트 색상 조정 */
+        }
+        .progress-container {
+            display: flex;
+            gap: 20px; /* 두 개의 서클 사이 간격 조정 */
+        }
+        .progress-circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.3)); /* 그림자 효과 추가 */
+            overflow: visible; /* 오버플로우 설정 추가 */
+        }
+        svg {
+            transform: rotate(-90deg);
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 15;
+        }
+        .circle {
+            fill: none;
+            stroke-width: 15;
+            stroke-linecap: round;
+            stroke: #4caf50;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 0.4s ease;
+        }
+        .progress-text {
+            position: absolute;
+            top: 140%; /* 텍스트 위치 약간 위로 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="skills-title">My Skills</div> <!-- 여기에 텍스트 추가 -->
+<div class="progress-container">
+    <div class="progress-circle">
+        <svg width="150" height="150" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet">
+            <circle class="circle-bg" cx="75" cy="75" r="70"></circle>
+            <circle class="circle" cx="75" cy="75" r="70"></circle>
+        </svg>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Icon" class="icon">
+        <div class="progress-text" id="progress-text-1">0%</div>
+    </div>
+
+    <div class="progress-circle">
+        <svg width="150" height="150" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet">
+            <circle class="circle-bg" cx="75" cy="75" r="70"></circle>
+            <circle class="circle" cx="75" cy="75" r="70"></circle>
+        </svg>
+        <img src="visual-studio-code-2019.png" alt="Visual Studio Code Icon" class="icon">
+        <div class="progress-text" id="progress-text-2">0%</div>
+    </div>
+    
+    <div class="progress-circle">
+        <svg width="150" height="150" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet">
+            <circle class="circle-bg" cx="75" cy="75" r="70"></circle>
+            <circle class="circle" cx="75" cy="75" r="70"></circle>
+        </svg>
+        <img src="5968705.png" alt="Icon" class="icon">
+        <div class="progress-text" id="progress-text-3">0%</div>
+    </div>
+</div>
+
+<script>
+    let progress1 = 0;
+    let progress2 = 0;
+    let progress3 = 0;
+    const progressText1 = document.getElementById("progress-text-1");
+    const progressText2 = document.getElementById("progress-text-2");
+    const progressText3 = document.getElementById("progress-text-3");
+    const circle1 = document.querySelector(".progress-circle:nth-child(1) .circle");
+    const circle2 = document.querySelector(".progress-circle:nth-child(2) .circle");
+    const circle3 = document.querySelector(".progress-circle:nth-child(3) .circle");
+    const radius1 = circle1.r.baseVal.value;
+    const radius2 = circle2.r.baseVal.value;
+    const radius3 = circle3.r.baseVal.value;
+    const circumference1 = 2 * Math.PI * radius1;
+    const circumference2 = 2 * Math.PI * radius2;
+    const circumference3 = 2 * Math.PI * radius3;
+
+    circle1.style.strokeDasharray = `${circumference1}`;
+    circle1.style.strokeDashoffset = `${circumference1}`;
+    
+    circle2.style.strokeDasharray = `${circumference2}`;
+    circle2.style.strokeDashoffset = `${circumference2}`;
+    
+    circle3.style.strokeDasharray = `${circumference3}`;
+    circle3.style.strokeDashoffset = `${circumference3}`;
+
+    function setProgress(circle, text, percent, circumference) {
+        const offset = circumference - (percent / 100 * circumference);
+        circle.style.strokeDashoffset = offset;
+        text.textContent = `${percent}%`;
+    }
+
+    function updateProgress() {
+        if (progress1 <= 80) { 
+            setProgress(circle1, progressText1, progress1, circumference1);
+            progress1 += 1;
+        }
+        if (progress2 <= 40) { // 두 번째 프로그레스를 40%에서 멈추게 설정
+            setProgress(circle2, progressText2, progress2, circumference2);
+            progress2 += 1;
+        }
+        if (progress3 <= 80) { 
+            setProgress(circle3, progressText3, progress3, circumference3);
+            progress3 += 1;
+        }
+        if (progress1 <= 80 || progress2 <= 40 || progress3 <= 80) {
+            setTimeout(updateProgress, 50);
+        } else {
+            progressText1.textContent = "80%";
+            progressText2.textContent = "40%"; // 두 번째 프로그레스의 최종 텍스트 업데이트
+            progressText3.textContent = "80%";
+        }
+    }
+
+    updateProgress();
+</script>
+
+</body>
+</html>
